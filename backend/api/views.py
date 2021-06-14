@@ -21,7 +21,7 @@ from .serializers import TodoItemCreateSerializer, TodoItemListSerializer, TodoI
 
 class TodoListViewSet(viewsets.ModelViewSet):
     queryset=TodoList.objects.all()
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticated]
     def get_serializer_class(self):
         if(self.action=='list'):
             return TodoListSerializer
@@ -34,7 +34,7 @@ class TodoListViewSet(viewsets.ModelViewSet):
 
 class TodoItemViewSet(viewsets.ModelViewSet):
     queryset=TodoItem.objects.all()
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticated]
     def get_serializer_class(self):
         if(self.action=='list'):
             return TodoItemListSerializer
