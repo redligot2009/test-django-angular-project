@@ -31,6 +31,10 @@ class TodoListViewSet(viewsets.ModelViewSet):
             return TodoListUpdateSerializer
         else:
             return TodoListCreateSerializer
+    def get_queryset(self):
+        queryset = self.queryset
+        query_set = queryset.filter(user=self.request.user)
+        return query_set
 
 class TodoItemViewSet(viewsets.ModelViewSet):
     queryset=TodoItem.objects.all()
@@ -44,3 +48,7 @@ class TodoItemViewSet(viewsets.ModelViewSet):
             return TodoItemUpdateSerializer
         else:
             return TodoItemCreateSerializer
+    def get_queryset(self):
+        queryset = self.queryset
+        query_set = queryset.filter(list__user=self.request.user)
+        return query_set
