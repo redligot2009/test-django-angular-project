@@ -13,7 +13,8 @@ class UserSerializer(serializers.ModelSerializer):
     # url=serializers.HyperlinkedIdentityField(view_name='user-detail')
     class Meta:
         model=User
-        fields=('username',
+        fields=('id',
+                'username',
                 'password',
                 'first_name',
                 'last_name',
@@ -58,11 +59,19 @@ class UserUpdateSerializer(serializers.ModelSerializer):
 
 class TodoItemSerializer(serializers.HyperlinkedModelSerializer):
     # list = TodoListSerializer()
+    id = serializers.IntegerField(read_only=True)
     url=serializers.HyperlinkedIdentityField(view_name='list-items-detail')
     list=HyperlinkedRelatedField(read_only=True,view_name='lists-detail')
     class Meta:
         model=TodoItem
         fields=('__all__')
+
+class TodoItemListSerializer(serializers.HyperlinkedModelSerializer):
+    id = serializers.IntegerField(read_only=True)
+    url=serializers.HyperlinkedIdentityField(view_name='list-items-detail')
+    class Meta:
+        model=TodoItem
+        fields=('id','url','title', 'description', 'finished')
 
 class TodoItemCreateSerializer(serializers.ModelSerializer):
     class Meta:
@@ -74,13 +83,8 @@ class TodoItemUpdateSerializer(serializers.ModelSerializer):
         model=TodoItem
         fields=('__all__')
 
-class TodoItemListSerializer(serializers.HyperlinkedModelSerializer):
-    url=serializers.HyperlinkedIdentityField(view_name='list-items-detail')
-    class Meta:
-        model=TodoItem
-        fields=('id','url','title', 'description', 'finished')
-
 class TodoListSerializer(serializers.HyperlinkedModelSerializer):
+    id = serializers.IntegerField(read_only=True)
     url=serializers.HyperlinkedIdentityField(view_name='lists-detail')
     user = UserListSerializer()
     list_items = TodoItemListSerializer(many=True, read_only=True)
