@@ -1,6 +1,7 @@
 from django.shortcuts import render
 
 from rest_framework import viewsets, permissions
+from django_filters.rest_framework import DjangoFilterBackend
 
 from .models import User, TodoList, TodoItem
 from .serializers import TodoItemCreateSerializer, TodoItemListSerializer, TodoItemUpdateSerializer, TodoListCreateSerializer, TodoListUpdateSerializer, UserCreateSerializer, UserListSerializer, UserSerializer, TodoListSerializer, TodoItemSerializer, UserUpdateSerializer
@@ -22,6 +23,8 @@ from .serializers import TodoItemCreateSerializer, TodoItemListSerializer, TodoI
 class TodoListViewSet(viewsets.ModelViewSet):
     queryset=TodoList.objects.all()
     permission_classes = [permissions.IsAuthenticated]
+    filter_backends=[DjangoFilterBackend]
+    filterset_fields=['user']
     def get_serializer_class(self):
         if(self.action=='list'):
             return TodoListSerializer
@@ -39,6 +42,8 @@ class TodoListViewSet(viewsets.ModelViewSet):
 class TodoItemViewSet(viewsets.ModelViewSet):
     queryset=TodoItem.objects.all()
     permission_classes = [permissions.IsAuthenticated]
+    filter_backends=[DjangoFilterBackend]
+    filterset_fields=['list','list__user','finished']
     def get_serializer_class(self):
         if(self.action=='list'):
             return TodoItemListSerializer
